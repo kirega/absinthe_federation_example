@@ -2,7 +2,7 @@ defmodule AbsintheFederationExample.MixProject do
   use Mix.Project
 
   @version "0.1.0"
-  @app :absinghe_federation_example
+  @app :absinthe_federation_example
 
   def project do
     [
