@@ -1,0 +1,3 @@
+#!/bin/sh
+cd -P -- "$(dirname -- "$0")"
+PHX_SERVER=true exec ./absinthe_federation_example start
