@@ -13,7 +13,11 @@ config :absinthe_federation_example,
 # Configures the endpoint
 config :absinthe_federation_example, AbsintheFederationExampleWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: AbsintheFederationExampleWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [
+    view: AbsintheFederationExampleWeb.ErrorView,
+    accepts: ~w(html json),
+    layout: false
+  ],
   pubsub_server: AbsintheFederationExample.PubSub,
   live_view: [signing_salt: "Dc3TFU7m"]
 
@@ -24,7 +28,8 @@ config :absinthe_federation_example, AbsintheFederationExampleWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :absinthe_federation_example, AbsintheFederationExample.Mailer, adapter: Swoosh.Adapters.Local
+config :absinthe_federation_example, AbsintheFederationExample.Mailer,
+  adapter: Swoosh.Adapters.Local
 
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
