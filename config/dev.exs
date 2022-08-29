@@ -2,13 +2,13 @@ import Config
 
 # Configure your database
 config :absinthe_federation_example, AbsintheFederationExample.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "absinthe_federation_example_dev",
+  username: System.get_env("DATABASE_USER") || "postgres",
+  password: System.get_env("DATABASE_PASS") || "postgres",
+  hostname: System.get_env("DATABASE_HOST") || "localhost",
+  database: System.get_env("DATABASE_DB") || "app_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -19,7 +19,8 @@ config :absinthe_federation_example, AbsintheFederationExample.Repo,
 config :absinthe_federation_example, AbsintheFederationExampleWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  # http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
@@ -73,3 +74,37 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# https://opentelemetry.io/docs/reference/specification/resource/semantic_conventions/
+config :opentelemetry, :resource, [
+  # In production service.name is set based on OS env vars from Erlang release
+  {"service.name", to_string(Mix.Project.config()[:app])},
+  # {"service.namespace", "MyNamespace"},
+  {"service.version", Mix.Project.config()[:version]}
+]
+
+# config :opentelemetry, :processors,
+#   otel_batch_processor: %{
+#     exporter: {:otel_exporter_stdout, []}
+#   }
+
+# https://hexdocs.pm/opentelemetry_exporter/1.0.0/readme.html
+# Maybe OTEL_EXPORTER_OTLP_ENDPOINT=http://opentelemetry-collector:55680
+config :opentelemetry, :processors,
+  otel_batch_processor: %{
+    exporter: {
+      :opentelemetry_exporter,
+      %{
+        protocol: :grpc,
+        endpoints: [
+          # gRPC
+          'http://localhost:4317'
+          # HTTP
+          # 'http://localhost:4318'
+          # 'http://localhost:55681'
+          # {:http, 'localhost', 4318, []}
+        ]
+        # headers: [{"x-honeycomb-dataset", "experiments"}]
+      }
+    }
+  }

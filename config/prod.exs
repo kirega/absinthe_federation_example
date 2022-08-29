@@ -13,7 +13,7 @@ config :absinthe_federation_example, AbsintheFederationExampleWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
-config :logger, level: :info
+config :logger, level: :info, metadata: :all
 
 # ## SSL Support
 #
@@ -48,3 +48,37 @@ config :logger, level: :info
 #       force_ssl: [hsts: true]
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
+
+# Finally import the config/prod.secret.exs which loads secrets
+# and configuration from environment variables.
+# import_config "prod.secret.exs"
+
+# https://opentelemetry.io/docs/reference/specification/resource/semantic_conventions/
+# config :opentelemetry, :resource,
+#   [
+#     # In production service.name is set based on OS env vars from Erlang release
+#     {"service.name", to_string(Mix.Project.config[:app])},
+#     # {"service.namespace", "MyNamespace"},
+#     {"service.version", Mix.Project.config[:version]},
+#   ]
+
+# https://hexdocs.pm/opentelemetry_exporter/1.0.0/readme.html
+# Maybe OTEL_EXPORTER_OTLP_ENDPOINT=http://opentelemetry-collector:55680
+config :opentelemetry, :processors,
+  otel_batch_processor: %{
+    exporter: {
+      :opentelemetry_exporter,
+      %{
+        protocol: :grpc,
+        endpoints: [
+          # gRPC
+          'http://localhost:4317'
+          # HTTP
+          # 'http://localhost:4318'
+          # 'http://localhost:55681'
+          # {:http, 'localhost', 4318, []}
+        ]
+        # headers: [{"x-honeycomb-dataset", "experiments"}]
+      }
+    }
+  }
