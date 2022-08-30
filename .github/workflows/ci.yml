@@ -8,9 +8,6 @@ on:
     types: [labeled, synchronize, reopened, unlabeled]
 jobs:
   build:
-    # if: |
-    #   contains( toJSON(github.event.pull_request.labels),
-    #   'aws-review-env' || 'docker') || contains(github.ref, 'refs/heads/main')
     runs-on: ubuntu-latest
     # runs-on: ubuntu-20.04
     services:
