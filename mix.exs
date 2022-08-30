@@ -73,6 +73,11 @@ defmodule AbsintheFederationExample.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:absinthe, "~> 1.7"},
+      # {:absinthe_ecto, "~> 0.1.3"},
+      {:absinthe_federation, "~> 0.2.53"},
+      {:absinthe_phoenix, "~> 2.0"},
+      {:absinthe_plug, "~> 1.5"},
       {:coverex, "~> 1.5", only: [:dev, :test], runtime: false},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
@@ -118,6 +123,7 @@ defmodule AbsintheFederationExample.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      # "assets.deploy": ["yarn --cwd assets deploy", "phx.digest"]
     ]
   end
 end
