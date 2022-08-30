@@ -29,3 +29,14 @@ config :logger, level: :warn
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :junit_formatter,
+  # report_file: "test-junit-report.xml",
+  # report_dir: "/tmp",
+  report_dir: "#{Mix.Project.build_path()}/junit-reports",
+  # report_dir: "junit-reports",
+  automatic_create_dir?: true,
+  print_report_file: true,
+  # prepend_project_name?: true,
+  include_filename?: true,
+  include_file_line?: true
