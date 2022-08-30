@@ -1,16 +1,17 @@
 ---
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-    types: [labeled,synchronize,reopened,unlabeled]
+on: push
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
+#     types: [labeled, synchronize, reopened, unlabeled]
 name: CI
 jobs:
   docker-build:
+    name: Docker build and push
     runs-on: ubuntu-20.04
     # runs-on: ubuntu-latest
-    name: API
     services:
       registry:
         image: registry:2
@@ -32,6 +33,7 @@ jobs:
       IMAGE_NAME: absinthe-app
       AWS_ROLE_TO_ASSUME: arn:aws:iam::770916339360:role/foo-dev-ecr-github-action-role
       AWS_REGION: ap-northeast-1
+
     steps:
       # - name: Dump event
       #   run: cat "$GITHUB_EVENT_PATH"
@@ -78,15 +80,15 @@ jobs:
           echo "::set-output name=run_id::${GITHUB_RUN_ID}"
           echo "::set-output name=run_num::${GITHUB_RUN_NUMBER}"
 
-    - name: Get branch name for push
-      if: github.event_name != 'pull_request'
-      run: |
-        echo "BRANCH=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+      - name: Get branch name for push
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "BRANCH=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
 
-    - name: Get pull_request branch name
-      if: github.event_name == 'pull_request'
-      run: |
-        echo "BRANCH=$(echo $GITHUB_HEAD_REF | tr '//\\' '.' | cut -c -55)" >> $GITHUB_ENV
+      - name: Get pull_request branch name
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "BRANCH=$(echo $GITHUB_HEAD_REF | tr '//\\' '.' | cut -c -55)" >> $GITHUB_ENV
 
       # - name: Set up QEMU for multi-platform builds
       #   id: qemu
