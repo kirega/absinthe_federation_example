@@ -5,12 +5,12 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-    types: [labeled,synchronize,reopened,unlabeled]
+    types: [labeled, synchronize, reopened, unlabeled]
 jobs:
   build:
     # if: |
-    #   contains( toJSON(github.event.pull_request.labels), 'aws-review-env' || 'docker') ||
-    #   contains(github.ref, 'refs/heads/main')
+    #   contains( toJSON(github.event.pull_request.labels),
+    #   'aws-review-env' || 'docker') || contains(github.ref, 'refs/heads/main')
     runs-on: ubuntu-latest
     # runs-on: ubuntu-20.04
     services:
@@ -175,7 +175,8 @@ jobs:
 
       - name: Publish unit test results to GitHub
         uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always() # always run even if tests fail
+        # Run even if tests fail
+        if: always()
         with:
           # Volume mounted from local filesystem into build
           junit_files: junit-reports/*.xml
