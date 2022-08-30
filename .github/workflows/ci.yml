@@ -1,14 +1,16 @@
+---
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-    types: [labeled, synchronize, reopened, unlabeled]
+    types: [labeled,synchronize,reopened,unlabeled]
 name: CI
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    # runs-on: ubuntu-20.04
+  docker-build:
+    runs-on: ubuntu-20.04
+    # runs-on: ubuntu-latest
+    name: API
     services:
       registry:
         image: registry:2
