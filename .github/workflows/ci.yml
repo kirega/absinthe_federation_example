@@ -1,11 +1,11 @@
 ---
-name: CI
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
     types: [labeled, synchronize, reopened, unlabeled]
+name: CI
 jobs:
   build:
     runs-on: ubuntu-latest
