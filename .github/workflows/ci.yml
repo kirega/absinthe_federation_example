@@ -135,6 +135,7 @@ jobs:
       pull-requests: write
       issues: read
 
+    steps:
       - name: Run tests
         env:
           REGISTRY: localhost:5000/
