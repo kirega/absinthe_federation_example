@@ -31,7 +31,7 @@ mix test
 
 # echo "===> Running static code analysis"
 mix credo
-MIX_ENV=dev mix dialyzer
+mix dialyzer
 mix deps.audit
 mix sobelow
 
