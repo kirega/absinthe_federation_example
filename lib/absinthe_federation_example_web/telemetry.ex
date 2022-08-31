@@ -1,4 +1,6 @@
-defmodule AbsintheFederationExampleWeb.Telemetry do
+defmodule PhoenixContainerExampleWeb.Telemetry do
+  @moduledoc false
+
   use Supervisor
   import Telemetry.Metrics
 
