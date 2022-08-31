@@ -110,10 +110,10 @@ jobs:
         uses: docker/build-push-action@v3
         env:
           REGISTRY: localhost:5000/
-          PUBLIC_REGISTRY: "${{ jobs.setup.outputs.registry }}/"
+          PUBLIC_REGISTRY: "${{ needs.jobs.setup.outputs.registry }}/"
         with:
           context: .
-          builder: ${{ jobs.setup.outputs.builder }}
+          builder: ${{ needs.jobs.setup.outputs.builder }}
           # file: ./Dockerfile
           # load: true
           push: true
@@ -139,7 +139,7 @@ jobs:
       - name: Run tests
         env:
           REGISTRY: localhost:5000/
-          # PUBLIC_REGISTRY: "${{ jobs.setup.outputs.registry }}/"
+          # PUBLIC_REGISTRY: "${{ needs.jobs.setup.outputs.registry }}/"
           PUBLIC_REGISTRY: ""
         run: |
           docker-compose -f docker-compose.gha.yml up test
@@ -165,13 +165,13 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          builder: ${{ jobs.setup.outputs.builder }}
+          builder: ${{ needs.jobs.setup.outputs.builder }}
           # file: ./Dockerfile
           push: true
           cache-from: type=gha,scope=${{ github.workflow }}
           cache-to: type=gha,scope=${{ github.workflow }}
           tags: |
-            ${{ jobs.setup.outputs.registry }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ needs.jobs.setup.outputs.registry }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
   # docker-build:
   #   name: Docker build and push
