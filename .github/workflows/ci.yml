@@ -1,17 +1,16 @@
 ---
-on: push
-# on:
-#   push:
-#     branches: [main]
-#   pull_request:
-#     branches: [main]
-#     types: [labeled, synchronize, reopened, unlabeled]
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    types: [labeled, synchronize, reopened, unlabeled]
 name: CI
 jobs:
   docker-build:
     name: Docker build and push
-    # runs-on: ubuntu-20.04
     runs-on: ubuntu-latest
+    # runs-on: ubuntu-20.04
     services:
       registry:
         image: registry:2
@@ -115,7 +114,7 @@ jobs:
         with:
           context: .
           builder: ${{ steps.buildx.outputs.name }}
-          # file: debian.Dockerfile
+          # file: ./Dockerfile
           # load: true
           push: true
           target: test-image
@@ -140,6 +139,7 @@ jobs:
           docker-compose -f docker-compose.gha.yml up test
           docker-compose -f docker-compose.gha.yml run test mix test
           docker-compose -f docker-compose.gha.yml run test mix do credo, deps.audit, sobelow
+          docker-compose -f docker-compose.gha.yml run test mix dialyzer --halt-exit-status
 
       - name: Build deploy image and push
         if: github.event_name != 'pull_request'
