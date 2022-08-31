@@ -30,7 +30,7 @@ jobs:
 
     env:
       IMAGE_NAME: absinthe-app
-      AWS_ROLE_TO_ASSUME: arn:aws:iam::770916339360:role/foo-dev-ecr-github-action-role
+      AWS_ROLE_TO_ASSUME: arn:aws:iam::770916339360:role/absinthe-dev-ecr-github-action-role
       AWS_REGION: ap-northeast-1
 
     steps:
