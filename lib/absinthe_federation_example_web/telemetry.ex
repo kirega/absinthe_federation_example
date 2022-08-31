@@ -1,4 +1,4 @@
-defmodule PhoenixContainerExampleWeb.Telemetry do
+defmodule AbsintheFederationExampleWeb.Telemetry do
   @moduledoc false
 
   use Supervisor
