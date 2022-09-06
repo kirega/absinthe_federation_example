@@ -44,10 +44,15 @@ config :esbuild,
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
+config :logger,
+  level: :info,
+  utc_log: true
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
+  metadata: [:request_id, :trace_id, :span_id]
+
 
 if System.get_env("RELEASE_MODE") do
   config :kernel, :logger, [
