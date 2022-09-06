@@ -66,7 +66,11 @@ config :absinthe_federation_example, AbsintheFederationExampleWeb.Endpoint,
   ]
 
 # Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
+config :logger, :console,
+  format: "$time $metadata[$level] $message\n",
+  metadata: [:mfa]
+# metadata: [:file, :line, :pid, :request_id, :trace_id, :span_id]
+
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.

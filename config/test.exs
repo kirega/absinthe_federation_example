@@ -21,11 +21,12 @@ config :absinthe_federation_example, AbsintheFederationExampleWeb.Endpoint,
   server: false
 
 # In test we don't send emails.
-config :absinthe_federation_example, AbsintheFederationExample.Mailer,
-  adapter: Swoosh.Adapters.Test
+config :phoenix_container_example, PhoenixContainerExample.Mailer, adapter: Swoosh.Adapters.Test
 
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger,
+  level: :warn
+  metadata: [:file, :line]
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
