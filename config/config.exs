@@ -48,6 +48,7 @@ config :esbuild,
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
+
 if System.get_env("RELEASE_MODE") do
   config :kernel, :logger, [
     {:handler, :default, :logger_std_h,
@@ -55,7 +56,7 @@ if System.get_env("RELEASE_MODE") do
        formatter:
          {:logger_formatter_json,
           %{
-            names: :datadog
+            names: :datadog,
             template: [
               :msg,
               :time,
