@@ -14,14 +14,7 @@ defmodule AbsintheFederationExample.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       dialyzer: [
-        # plt_add_deps: :project,
-        # plt_add_apps: [:ssl, :mnesia, :compiler, :xmerl, :inets],
         plt_add_apps: [:mix, :ex_unit]
-        # plt_add_apps: [:poison],
-        # plt_add_deps: true,
-        # flags: ["-Werror_handling", "-Wrace_conditions"],
-        # flags: ["-Wunmatched_returns", :error_handling, :race_conditions, :underspecs],
-        # ignore_warnings: "dialyzer.ignore-warnings"
       ],
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
@@ -37,9 +30,6 @@ defmodule AbsintheFederationExample.MixProject do
     ]
   end
 
-  # Configuration for the OTP application.
-  #
-  # Type `mix help compile.app` for more information.
   def application do
     [
       mod: {AbsintheFederationExample.Application, []},
@@ -67,9 +57,6 @@ defmodule AbsintheFederationExample.MixProject do
     ]
   end
 
-  # Specifies your project dependencies.
-  #
-  # Type `mix help deps` for examples and options.
   defp deps do
     [
       {:absinthe, "~> 1.7"},
