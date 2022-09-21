@@ -1,14 +1,14 @@
 defmodule AbsintheFederationExample.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
   @app :absinthe_federation_example
+  @version "0.1.0"
 
   def project do
     [
       app: @app,
       version: @version,
-      elixir: "~> 1.12",
+      elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       # elixirc_options: [warnings_as_errors: Mix.env() != :dev],
       start_permanent: Mix.env() == :prod,
@@ -31,9 +31,9 @@ defmodule AbsintheFederationExample.MixProject do
         "coveralls.html": :test,
         "coveralls.lcov": :test
       ],
-      deps: deps(),
       default_release: :prod,
-      releases: releases()
+      releases: releases(),
+      deps: deps()
     ]
   end
 
@@ -60,9 +60,7 @@ defmodule AbsintheFederationExample.MixProject do
   defp releases do
     [
       prod: [
-        version: @version,
         include_executables_for: [:unix]
-        # applications: [:runtime_tools :permanent, :opentelemetry_exporter :load, :opentelemetry :temporary, @app :permanent]
         # Don't need to tar if we are just going to copy it
         # steps: [:assemble, :tar]
       ]
