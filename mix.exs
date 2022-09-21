@@ -22,7 +22,9 @@ defmodule AbsintheFederationExample.MixProject do
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test,
-        "coveralls.lcov": :test
+        "coveralls.lcov": :test,
+        quality: :test,
+        "quality.ci": :test
       ],
       default_release: :prod,
       releases: releases(),
@@ -109,8 +111,20 @@ defmodule AbsintheFederationExample.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
-      # "assets.deploy": ["yarn --cwd assets deploy", "phx.digest"]
+      "assets.deploy": ["esbuild default --minify", "phx.digest"],
+      # "assets.deploy": ["yarn --cwd assets deploy", "phx.digest"],
+      quality: [
+        "format --check-formatted",
+        "credo",
+        "dialyzer --halt-exit-status",
+        "sobelow --exit"
+      ],
+      "quality.ci": [
+        "format --check-formatted",
+        "credo --ignore refactor,duplicated",
+        "dialyzer --halt-exit-status",
+        "sobelow --exit"
+      ]
     ]
   end
 end
