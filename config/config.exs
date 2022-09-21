@@ -53,7 +53,6 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id, :trace_id, :span_id]
 
-
 if System.get_env("RELEASE_MODE") do
   config :kernel, :logger, [
     {:handler, :default, :logger_std_h,
@@ -70,6 +69,7 @@ if System.get_env("RELEASE_MODE") do
               :line,
               :mfa,
               :pid,
+              :request_id,
               :trace_id,
               :span_id
             ]
