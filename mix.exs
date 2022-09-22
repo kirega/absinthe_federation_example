@@ -67,6 +67,7 @@ defmodule AbsintheFederationExample.MixProject do
       {:absinthe_phoenix, "~> 2.0"},
       {:absinthe_plug, "~> 1.5"},
       {:absinthe_relay, "~> 1.5"},
+      {:corsica, "~> 1.2"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.2", only: [:dev, :test], runtime: false},
       {:ecto_sql, "~> 3.6"},
