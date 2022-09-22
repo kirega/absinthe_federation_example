@@ -18,40 +18,59 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Forum: https://elixirforum.com/c/phoenix-forum
   * Source: https://github.com/phoenixframework/phoenix
 
-
-## Apollo Router
-
-The Apollo Router requires a composed supergraph schema at startup.
-  * Fetch a registered schema from Apollo Studio by setting
-    these environment variables:
-
-      $ APOLLO_KEY="..." APOLLO_GRAPH_REF="..." ./router
-
-      For details, see the Apollo docs:
-      https://www.apollographql.com/docs/router/managed-federation/setup
-
-🔬 TESTING THINGS OUT?
-
-  1. Download an example supergraph schema with Apollo-hosted subgraphs:
-
-    $ curl -L https://supergraph.demo.starstuff.dev/ > starstuff.graphql
-
-  2. Run the Apollo Router with the supergraph schema:
-
-    $ ./router --supergraph starstuff.graphql
+## Rover CLI
 
 Rover is a CLI for managing and maintaining graphs.
-https://www.apollographql.com/docs/rover/
 
-On macOS:
+https://www.apollographql.com/docs/rover/
 
 ```command
 brew install rover
 ```
 
-On Linux:
-```command
-curl -sSL https://rover.apollo.dev/nix/latest | sh
-# Note the `v` prefixing the version number
-curl -sSL https://rover.apollo.dev/nix/v0.8.1 | sh
-```command
+## Fetch GraphQL server's schema via introspection
+```console
+rover graph introspect http://api.example.com/graphql > api.graphql
+rover graph introspect http://api2.example.com/graphql > api2.graphql
+```
+
+## Compose a federated supergraph schema from multiple subgraphs
+
+Create a `supergraph.yaml` config file which identifies the back end servers
+and graphs:
+
+```yaml
+federation_version: 2
+subgraphs:
+  api:
+    routing_url: https://api.example.com/
+    schema:
+      file: ./api.graphql
+  api2:
+    routing_url: https://api2.example.com/
+    schema:
+      file: ./api2.graphql
+```
+
+Create output supergraph schema:
+
+```console
+rover supergraph compose --config ./supergraph.yaml > supergraph.graphql
+```
+
+## Start Apollo Router
+
+```console
+docker-compose up apollo-router
+```
+
+## Query router
+
+```console
+curl --request POST --header 'content-type: application/json' --url 'http://0.0.0.0:4000/' --data '{"query":"query { foo }"}'
+```
+
+## Links
+* https://www.apollographql.com/docs/router/
+https://www.apollographql.com/docs/rover/commands/supergraphs/
+* https://romankudryashov.com/blog/2022/07/apollo-router/
