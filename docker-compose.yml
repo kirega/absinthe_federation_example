@@ -1,0 +1,88 @@
+---
+version: "3.9"
+services:
+  app:
+    image: ${REGISTRY}${IMAGE_OWNER}/${IMAGE_NAME}:${IMAGE_TAG:-latest}
+    # image: "${REPO_URL}:${IMAGE_TAG:-latest}"
+    environment:
+      - PORT=4001
+      - SECRET_KEY_BASE
+      - DATABASE_URL
+      - DATABASE_HOST=postgres
+      - DATABASE_DB
+    ports:
+      - "4001:4001"
+    depends_on:
+      - postgres
+
+  test:
+    image: ${REGISTRY}${IMAGE_OWNER}/${IMAGE_NAME}:test
+    environment:
+      - MIX_ENV=test
+      - DATABASE_URL
+      - DATABASE_HOST=postgres
+      - DATABASE_DB
+      - SECRET_KEY_BASE
+    # stdin_open: true
+    # tty: true
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - "./junit-reports:/app/_build/test/junit-reports"
+
+  # https://github.com/docker-library/docs/blob/master/postgres/README.md
+  # https://geshan.com.np/blog/2021/12/docker-postgres/
+  postgres:
+    image: ${PUBLIC_REGISTRY}postgres:14.1-alpine
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data_path:/var/lib/postgresql/data
+      # - ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    healthcheck:
+      # test: ["CMD-SHELL", "pg_isready -U postgres -d app_test"]
+      test: ["CMD-SHELL", "pg_isready"]
+      start_period: 5s
+      interval: 2s
+      timeout: 5s
+      retries: 20
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: some!Password
+    ports:
+      - "1433:1433"
+
+  mysql:
+    image: "${PUBLIC_REGISTRY}mysql:8"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      # MYSQL_ROOT_PASSWORD: example
+    # command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+
+  apollo-router:
+    image: ghcr.io/apollographql/router:v1.0.0
+    ports:
+      - "4000:4000"
+      - "1088:1088"
+    environment:
+      # https://www.apollographql.com/docs/router/configuration/overview
+      APOLLO_ROUTER_LOG: "debug"
+      APOLLO_ROUTER_SUPERGRAPH_PATH: /dist/schema/local.graphql
+      APOLLO_ROUTER_HOT_RELOAD: "true"
+    volumes:
+      # - ./router.yaml:/dist/config/router.yaml"
+      - ./supergraph.graphql:/dist/schema/local.graphql
+        
+volumes:
+  postgres_data_path:
+    driver: local
