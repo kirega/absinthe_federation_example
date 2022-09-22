@@ -214,7 +214,7 @@ FROM build-deps-get AS test-image
     COPY lib ./lib
     COPY priv ./priv
     COPY test ./test
-    COPY bin ./bin
+    # COPY bin ./bin
 
     # Umbrella
     # COPY apps ./apps
@@ -577,14 +577,9 @@ FROM build-os-deps AS dev
         apt-get update -qq && \
         DEBIAN_FRONTEND=noninteractive \
         apt-get -y install -y -qq --no-install-recommends \
-            ffmpeg \
-            imagemagick \
             inotify-tools \
-            python3-dev \
-            python3-pip \
             ssh \
             sudo \
-            tzdata \
         && \
         # https://www.networkworld.com/article/3453032/cleaning-up-with-apt-get.html
         # https://manpages.ubuntu.com/manpages/jammy/man8/apt-get.8.html
