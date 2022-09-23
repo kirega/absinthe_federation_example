@@ -42,14 +42,14 @@ and graphs:
 ```yaml
 federation_version: 2
 subgraphs:
-  api:
-    routing_url: https://api.example.com/
+  foo:
+    routing_url: https://foo.example.com/
     schema:
-      file: ./api.graphql
-  api2:
-    routing_url: https://api2.example.com/
+      file: ./foo.graphql
+  bar:
+    routing_url: https://bar.example.com/
     schema:
-      file: ./api2.graphql
+      file: ./bar.graphql
 ```
 
 Create output supergraph schema:
@@ -72,5 +72,5 @@ curl --request POST --header 'content-type: application/json' --url 'http://0.0.
 
 ## Links
 * https://www.apollographql.com/docs/router/
-https://www.apollographql.com/docs/rover/commands/supergraphs/
+* https://www.apollographql.com/docs/rover/commands/supergraphs/
 * https://romankudryashov.com/blog/2022/07/apollo-router/
