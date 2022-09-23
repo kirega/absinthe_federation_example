@@ -36,7 +36,7 @@ rover graph introspect http://api2.example.com/graphql > api2.graphql
 
 ## Compose a federated supergraph schema from multiple subgraphs
 
-Create a `supergraph.yaml` config file which identifies the back end servers
+Create a `supergraph.yml` config file which identifies the back end servers
 and graphs:
 
 ```yaml
@@ -55,7 +55,7 @@ subgraphs:
 Create output supergraph schema:
 
 ```console
-rover supergraph compose --config ./supergraph.yaml > supergraph.graphql
+rover supergraph compose --config ./supergraph.yml > supergraph.graphql
 ```
 
 ## Start Apollo Router
