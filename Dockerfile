@@ -472,7 +472,7 @@ FROM deploy-base AS deploy-scan
     # COPY --from=deploy-install /usr/local/bin/grype /usr/local/bin/grype
     COPY --from=test-image /usr/local/bin/trivy /usr/local/bin/trivy
     COPY --from=test-image /usr/local/share/trivy/templates /usr/local/share/trivy/templates
-    # COPY --from=test-image /usr/local/bin/grype /usr/local/bin/grype
+    COPY --from=test-image /usr/local/bin/grype /usr/local/bin/grype
 
     # RUN set -exu && \
     #     mkdir -p /sarif-reports && \
