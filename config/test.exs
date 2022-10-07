@@ -21,7 +21,7 @@ config :absinthe_federation_example, AbsintheFederationExampleWeb.Endpoint,
   server: false
 
 # In test we don't send emails.
-config :phoenix_container_example, PhoenixContainerExample.Mailer, adapter: Swoosh.Adapters.Test
+config :absinthe_federation_example, PhoenixContainerExample.Mailer, adapter: Swoosh.Adapters.Test
 
 # Print only warnings and errors during test
 config :logger,
