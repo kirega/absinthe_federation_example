@@ -210,6 +210,8 @@ FROM build-deps-get AS test-image
     # Compile deps separately from app, improving Docker caching
     RUN mix deps.compile
 
+    RUN mix dialyzer --plt
+
     # COPY coveralls.json ./
     COPY .credo.exs ./
     COPY .formatter.exs ./
@@ -231,7 +233,6 @@ FROM build-deps-get AS test-image
     # isolation https://github.com/elixir-lang/elixir/issues/9407
     #     mix cmd mix compile --warnings-as-errors
 
-    RUN mix dialyzer --plt
 
 # Create Elixir release
 FROM build-deps-get AS deploy-release
