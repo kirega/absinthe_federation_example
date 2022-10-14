@@ -40,6 +40,32 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v2
 
+      - name: Set variables
+        id: vars
+        run: |
+          echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV
+          echo "::set-output name=run_id::${GITHUB_RUN_ID}"
+          echo "::set-output name=run_num::${GITHUB_RUN_NUMBER}"
+
+      - name: Get branch name for push
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "BRANCH=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+
+      - name: Get branch name for pull_request
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "BRANCH=$(echo $GITHUB_HEAD_REF | tr '//\\' '.' | cut -c -55)" >> $GITHUB_ENV
+
+      # - name: Set up QEMU for multi-platform builds
+      #   id: qemu
+      #   uses: docker/setup-qemu-action@v2
+      #   with:
+      #     platforms: linux/amd64,linux/arm64
+
+      # - name: Display available platforms
+      #   run: echo "${{ steps.qemu.outputs.platforms }}"
+
       - name: Set up Docker buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
@@ -322,6 +348,7 @@ jobs:
       # Interact with GitHub's OIDC Token endpoint for AWS
       id-token: write
       contents: read
+
       # Read from ghcr.io repository
       packages: read
 
